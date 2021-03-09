@@ -12,6 +12,7 @@ def parse_args():
         '--delim', '-d', help='Delimeter to convert from', required=False, default=';')
     args.add_argument('--out', '-o', help='File output name',
                       required=False, default=None)
+    args.add_argument('--explicit_empty_fields', '-e', required=False, default=True, const=False, nargs='?', help='Explicitly print null in empty fields, default True')
     return parser.parse_args()
 
 
@@ -40,6 +41,9 @@ def main(args):
         header = next(csv_reader)
 
         for line in csv_reader:
+            # Writes the string null in empty fields
+            if args.explicit_empty_fields:
+                line = [x if x != '' else 'null' for x in line]
             lines.append(line)
 
     if args.out is None:

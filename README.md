@@ -26,6 +26,8 @@ optional arguments:
 
   `--out OUT, -o OUT : File output name`
 
+  `--explicit_empty_fields, EEF, -e EEF : Explicitly print null in empty fields, default prints null in their place`
+
 
 ### Example
 
