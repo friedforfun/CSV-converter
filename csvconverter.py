@@ -3,12 +3,15 @@ import sys
 import argparse
 import csv
 
+
 def parse_args():
     parser = argparse.ArgumentParser(description='CSV converter')
     args = parser.add_argument_group('main args')
     args.add_argument('--csv', '-c', help='csv file to convert', required=True)
-    args.add_argument('--delim', '-d', help='Delimeter to convert from', required=False, default=';')
-    args.add_argument('--out', '-o', help='File output name', required=False, default=None)
+    args.add_argument(
+        '--delim', '-d', help='Delimeter to convert from', required=False, default=';')
+    args.add_argument('--out', '-o', help='File output name',
+                      required=False, default=None)
     return parser.parse_args()
 
 
@@ -31,13 +34,13 @@ def main(args):
 
     # actual file name
     file_name = str(os.path.basename(path))
-    
+
     with open(path, 'r') as f:
-        header = f.readline().rstrip().split(args.delim)
-        
-        for line in f:
-            line = line.rstrip()
-            lines.append(line.split(args.delim))
+        csv_reader = csv.reader(f, delimiter=args.delim)
+        header = next(csv_reader)
+
+        for line in csv_reader:
+            lines.append(line)
 
     if args.out is None:
         new_path = path.split('.csv')[0]+'_clean.csv'
@@ -49,10 +52,3 @@ def main(args):
 
 if __name__ == "__main__":
     sys.exit(main(parse_args()) or 0)
-    
-    
-
-
-
-
-
